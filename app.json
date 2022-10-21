@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "renix",
-    "slug": "renix",
+    "name": "bunker",
+    "slug": "bunker",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
