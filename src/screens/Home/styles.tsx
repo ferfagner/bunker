@@ -1,6 +1,7 @@
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled,{css}from 'styled-components/native'
-import {getStatusBarHeight} from 'react-native-iphone-x-helper'
+import {getStatusBarHeight, getBottomSpace} from 'react-native-iphone-x-helper'
+import { FlatList } from 'react-native';
 
 interface HeaderProps{
 
@@ -75,7 +76,11 @@ export const InfoSocialContent = styled.View`
     margin-right: 20px;
 `;
 
-export const PostsContent = styled.View`
+export const PostsList = styled(FlatList).attrs({
+    showsVerticalScrollIndicator: false,
+    contentContainerStyle: { paddingBottom: getBottomSpace() }
+
+})`
     margin-top: ${RFValue(20)}px;
     margin-left: 10px;
     margin-right: 10px;
@@ -87,6 +92,12 @@ export const TextPost = styled.Text`
     color: ${({theme}) => theme.colors.secondary};
     margin-top: ${RFValue(80)}px;
     margin-left: 10px;
+`;
+
+export const FooteButton = styled.View`
+    position: absolute;
+    bottom: 22px;
+    right: 22px;
 `;
 
 

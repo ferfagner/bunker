@@ -24,6 +24,7 @@ export const Title = styled.Text`
     font-size: ${RFValue(14)}px;
     color: ${({theme}) => theme.colors.text};
     font-family: ${({theme}) => theme.font.medium};
+    text-transform: uppercase;
     
 `;
 

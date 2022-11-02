@@ -8,13 +8,13 @@ import {useFonts,
 } from '@expo-google-fonts/poppins'
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback } from "react";
-import { Home } from './src/screens/Home';
+
 
 import {ThemeProvider} from 'styled-components'
 import theme from './src/styles/theme';
+import { Routes } from './src/routes';
 
 
-import { Login } from './src/screens/Login';
 
 
 export default function App() {
@@ -39,7 +39,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       
-    <Home/>
+    <Routes/>
     </ThemeProvider>
    
   );

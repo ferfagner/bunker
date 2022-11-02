@@ -1,8 +1,11 @@
-import react from 'react';
+import react, { useState, useEffect } from 'react';
 import { ButtonConfig } from '../../components/ButtonConfi';
 import { InfoSocial } from '../../components/InfoSocial';
-import { PostUser } from '../../components/PostUser';
+import { PostUser } from '../../components/Posts/PostUser';
+import { NewPostButton } from '../../components/Posts/NewPostButton';
+import { UserDTO } from '../../dtos/userDTO';
 
+import { useNavigation, ParamListBase, NavigationProp, useRoute } from '@react-navigation/native';
 
 import {
   Container,
@@ -15,13 +18,42 @@ import {
   User,
   ButtonConfigWrapper,
   InfoSocialContent,
-  PostsContent,
-  TextPost
+  PostsList,
+  TextPost,
+  FooteButton
 } from './styles'
 
+interface Params{
+  user: UserDTO
+}
+
+interface UserParams{
+    id: string;
+    idIgreja: string;
+    name: string;
+    userName: string;
+    email: string;
+    senha: string;
+    image: string
+}
 
 
 export function Home(){
+
+  
+
+  const navigation = useNavigation<NavigationProp<ParamListBase>>()
+  const routes = useRoute()
+  const {user} = routes.params as Params
+  console.log(user)
+  function handleNewPost(){
+    navigation.navigate('NewPost', {user})
+  }
+
+  useEffect(()=>{
+  
+  
+  },[])
 
  return(
 
@@ -30,10 +62,10 @@ export function Home(){
   <Header imageHeader="https://faculdadecristadecuritiba.com.br/storage/2021/02/Igreja-Local-770x367.png">
     <ContentUser>
       <UserInfo>
-      <Image source={{uri : 'https://avatars.githubusercontent.com/u/5932294'}}/>
+      <Image source={{uri: 'data:image/jpeg;base64,' + user.image}}/>
       <User>
       <UserGraeting>Olá,</UserGraeting>
-      <UserName>@ferfagner</UserName>
+      <UserName>{user.userName}</UserName>
       </User>
       </UserInfo>
       <ButtonConfigWrapper>
@@ -48,11 +80,15 @@ export function Home(){
   <TextPost>
     Suas Postagens
   </TextPost>
-  <PostsContent>
+  
  
-  <PostUser />
-
-  </PostsContent>
+  
+  <FooteButton>
+    <NewPostButton
+    onPress={handleNewPost}
+    />
+  </FooteButton>
+  
 
  </Container>
 )

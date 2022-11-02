@@ -2,7 +2,7 @@ export default{
 
     colors : {
 
-        header: '#7A7A80',
+        header: '#2b2b2b',
 
         background_color: '#000000',
 

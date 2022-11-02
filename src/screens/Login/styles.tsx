@@ -1,6 +1,7 @@
 import styled from 'styled-components/native'
 import { RFValue } from 'react-native-responsive-fontsize';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
+import { RectButton } from 'react-native-gesture-handler';
 
 
 export const Container = styled.View`
@@ -30,7 +31,7 @@ export const ButtonWrapper = styled.View`
 
 `;
 
-export const NotAccoutWrapper = styled.View`
+export const NotAccoutWrapper = styled(RectButton)`
 
 padding-bottom: ${getBottomSpace() + 80}px;
 

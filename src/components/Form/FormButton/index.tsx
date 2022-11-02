@@ -11,16 +11,17 @@ interface Props extends RectButtonProps{
 
   color?: string,
   title: string
-
+  onPress: ()=> void;
 
 }
 
-export function FormButton({color, title, ...rest}: Props){
+export function FormButton({color, title,onPress, ...rest}: Props){
 
  return(
  
     <Button {...rest}
     color={color}
+    onPress={onPress}
     >
       <Title>
         {title}
