@@ -1,11 +1,11 @@
-import react, { useState, useEffect } from 'react';
+import react, { useState, useEffect, useCallback } from 'react';
 import { ButtonConfig } from '../../components/ButtonConfi';
 import { InfoSocial } from '../../components/InfoSocial';
 import { PostUser } from '../../components/Posts/PostUser';
 import { NewPostButton } from '../../components/Posts/NewPostButton';
 import { UserDTO } from '../../dtos/userDTO';
 
-import { useNavigation, ParamListBase, NavigationProp, useRoute } from '@react-navigation/native';
+import { useNavigation, ParamListBase, NavigationProp, useRoute, useFocusEffect } from '@react-navigation/native';
 
 import {
   Container,
@@ -22,6 +22,9 @@ import {
   TextPost,
   FooteButton
 } from './styles'
+import { api } from '../../services/api';
+import { PostDTO } from '../../dtos/postDTO';
+import { FlatList } from 'react-native-gesture-handler';
 
 interface Params{
   user: UserDTO
@@ -40,20 +43,42 @@ interface UserParams{
 
 export function Home(){
 
-  
+  const [allposts, setAllposts] = useState<PostDTO[]>([])
 
   const navigation = useNavigation<NavigationProp<ParamListBase>>()
   const routes = useRoute()
   const {user} = routes.params as Params
-  console.log(user)
+
+ 
+  
+  
+  
+  
+
   function handleNewPost(){
     navigation.navigate('NewPost', {user})
   }
 
-  useEffect(()=>{
+  async function leadPosts(){
+
+    try {
+      
+      const response = await api.get(`posts?userId=${user.id}`)
+
+      setAllposts(response.data)
   
-  
-  },[])
+    } catch (error) {
+      
+      
+    }
+
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      leadPosts();
+    }, [])
+  );
 
  return(
 
@@ -75,12 +100,25 @@ export function Home(){
     
   </Header>
   <InfoSocialContent>
-  <InfoSocial/>
+  <InfoSocial
+  qntPosts={allposts.length}
+  />
   </InfoSocialContent>
   <TextPost>
     Suas Postagens
   </TextPost>
+
+    <FlatList 
+    data={allposts.reverse()}
+    inverted={false}
+    keyExtractor={item => item.id}
+    renderItem={({item})=> 
+    <PostUser 
+    data={item}
+    />
   
+  }
+    />
  
   
   <FooteButton>

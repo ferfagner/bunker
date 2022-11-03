@@ -26,6 +26,7 @@ export function InputPost({
           <Input {...rest} onChangeText={onChange} value={value} />
         )}
         name={name}
+        
       />
     </Container>
   );

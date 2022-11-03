@@ -10,7 +10,11 @@ import {
   DiscipuladoContent
 } from './styles'
 
-export function InfoSocial(){
+interface Props{
+    qntPosts: number
+}
+
+export function InfoSocial({qntPosts}: Props){
 
  return(
 
@@ -19,7 +23,7 @@ export function InfoSocial(){
         <Icon name="post-add"/>
         <Title>
             Posts {'\n'}
-            999
+            {qntPosts}
         </Title>
     </PostContent>
     <IgrejaContet>

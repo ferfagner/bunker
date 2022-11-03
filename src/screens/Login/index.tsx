@@ -25,6 +25,8 @@ import {
   LogoWrapper,
   Strong
 } from './styles'
+import { yupResolver } from '@hookform/resolvers/yup';
+import { schema } from './schema';
 
 
 interface FormLogin {
@@ -37,8 +39,11 @@ export function Login(){
   const {
     control,
     handleSubmit,
-    reset
-  } = useForm()
+    reset,
+    formState: {errors}
+} = useForm({
+    resolver: yupResolver(schema)
+})
 
 
   const navigation = useNavigation<NavigationProp<ParamListBase>>()
@@ -54,15 +59,20 @@ export function Login(){
     try {
 
       const response = await api.get(`users?email=${email}&senha=${senha}`)
+      setUser(response.data[0])
+
+      if(user){
+        navigation.navigate('Home', {user})
+      }else{
+        Alert.alert('e-mail ou senha incorreto!')
+      }
+        
+        
       
-        setUser(response.data[0])
-      
-         
+        
          
     } catch (error) {
       console.log(error)
-    }finally{
-      navigation.navigate('Home', {user})
     }
   
   }
@@ -86,6 +96,7 @@ export function Login(){
     placeholder="Digite seu E-mail!"
     autoCorrect={false}
     autoCapitalize="none"
+    error={errors.email && errors.email.message.toString()}
     />
 
     <InputForm 
@@ -93,7 +104,9 @@ export function Login(){
     control={control}
     placeholder="Digite sua Senha!"
     autoCorrect={false}
-    secureTextEntry={false}
+    secureTextEntry={true}
+    autoCapitalize="none"
+    error={errors.senha && errors.senha.message.toString()}
     />
     
     <ButtonWrapper>

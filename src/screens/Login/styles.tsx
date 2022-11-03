@@ -33,7 +33,7 @@ export const ButtonWrapper = styled.View`
 
 export const NotAccoutWrapper = styled(RectButton)`
 
-padding-bottom: ${getBottomSpace() + 80}px;
+    padding-bottom: ${getBottomSpace() + 80}px;
 
 `;
 

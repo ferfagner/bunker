@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { api } from '../../services/api';
 
 import uuid from 'react-native-uuid';
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import * as ImagePicker from 'expo-image-picker';
 
@@ -20,6 +21,7 @@ import {
 import { FormButton } from '../../components/Form/FormButton';
 import { ButtonImage } from '../../components/ButtonImage/indes';
 import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
+import { schema } from './schema';
 
 
 interface UserProps{
@@ -36,7 +38,6 @@ interface UserProps{
 export function Register(){
 
     const navigation = useNavigation<NavigationProp<ParamListBase>>()
-    const [user, setUser] = useState<UserProps>({} as UserProps)
     const [image, setImage] = useState(null);
 
     const pickImage = async () => {
@@ -54,7 +55,7 @@ export function Register(){
         }
     }
 
-    async function handleRegisterUser({name, userName, email, senha, confSenha}: UserProps) {
+    async function handleRegisterUser({name, userName, email, senha}: UserProps) {
 
 
         
@@ -80,8 +81,11 @@ export function Register(){
     const {
         control,
         handleSubmit,
-        reset
-    } = useForm()
+        reset,
+        formState: {errors}
+    } = useForm({
+        resolver: yupResolver(schema)
+    })
  return(
 <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
  <Container>
@@ -94,7 +98,7 @@ export function Register(){
     placeholder="Digite seu nome completo!"
     autoCorrect={false}
     autoCapitalize="words"
-    
+    error={errors.name && errors.name.message.toString()}
     />
     <Label>Nome de Usuário:</Label>
     <InputForm 
@@ -103,6 +107,7 @@ export function Register(){
     placeholder="Digite seu nome de usuário!"
     autoCorrect={false}
     autoCapitalize="none"
+    error={errors.userName && errors.userName.message.toString()}
     />
      <Label>E-Mail:</Label>
     <InputForm 
@@ -111,6 +116,7 @@ export function Register(){
     placeholder="Digite seu e-mail!"
     autoCorrect={false}
     autoCapitalize="none"
+    error={errors.email && errors.email.message.toString()}
     />
     <Label>Senha:</Label>
     <InputForm 
@@ -118,7 +124,9 @@ export function Register(){
     control={control}
     placeholder="Digite sua senha!"
     autoCorrect={false}
-    secureTextEntry={false}
+    secureTextEntry={true}
+    autoCapitalize="none"
+    error={errors.senha && errors.senha.message.toString()}
     />
     <Label>Confirmar Senha:</Label>
     <InputForm 
@@ -126,7 +134,9 @@ export function Register(){
     control={control}
     placeholder="Digite sua senha novamente!"
     autoCorrect={false}
-    secureTextEntry={false}
+    secureTextEntry={true}
+    autoCapitalize="none"
+    error={errors.confSenha && errors.confSenha.message.toString()}
     />
     </FormWrapper>
     <ButtonWrapper>

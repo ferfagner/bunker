@@ -36,11 +36,15 @@ export function PostUser({data}: PostUserProps){
     <Header>
         <ImageUser source={{uri: 'data:image/jpeg;base64,' + data.user.image}}/>
         <UserName>
-            @FerFagner
+            @{data.user.userName}
         </UserName>
     </Header>
     <PostContent>
+        {!data.imagePost ? 
+        <></>:
         <ImagePost source={{uri: 'data:image/jpeg;base64,' + data.imagePost}}/>
+        }
+        
         <TextPost>
         {data.textPost}
         </TextPost>

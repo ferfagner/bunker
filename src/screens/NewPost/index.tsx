@@ -75,6 +75,7 @@ export function NewPost(){
     await api.post('/posts', {
       id: uuid.v4(),
       idIgraja: user.idIgreja,
+      userId: user.id,
       textPost: post,
       imagePost: image,
       date: new Date(),

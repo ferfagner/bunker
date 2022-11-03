@@ -4,7 +4,6 @@ import { AntDesign } from '@expo/vector-icons';
 
 export const Container = styled.View`
     width: 100%;
-    height: 300px;
     background-color: ${({theme}) => theme.colors.shape};
     border-radius: 5px;
     margin-bottom: 14px;
