@@ -19,7 +19,7 @@ import {
   ButtonWrapper
 } from './styles'
 import { FormButton } from '../../components/Form/FormButton';
-import { ButtonImage } from '../../components/ButtonImage/indes';
+import { ButtonImage } from '../../components/AddImageButton';
 import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
 import { schema } from './schema';
 
@@ -39,6 +39,7 @@ export function Register(){
 
     const navigation = useNavigation<NavigationProp<ParamListBase>>()
     const [image, setImage] = useState(null);
+    const [isLoading, setIsLoading] = useState(false)
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -58,7 +59,8 @@ export function Register(){
     async function handleRegisterUser({name, userName, email, senha}: UserProps) {
 
 
-        
+        setIsLoading(true)
+
         await api.post('/users',{
             id: uuid.v4(),
             idIgreja: null,
@@ -69,7 +71,9 @@ export function Register(){
             image: image
 
         }).then(response => {
+            setIsLoading(false)
             navigation.navigate('Login')
+            
         })
 
 
@@ -145,6 +149,8 @@ export function Register(){
     />
     </ButtonWrapper>
     <FormButton 
+    enabled={isLoading}
+    loading={isLoading}
     title='Criar Conta'
     onPress={handleSubmit(handleRegisterUser)}
     />

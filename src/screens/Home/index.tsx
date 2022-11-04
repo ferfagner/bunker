@@ -1,9 +1,11 @@
 import react, { useState, useEffect, useCallback } from 'react';
-import { ButtonConfig } from '../../components/ButtonConfi';
+import { ButtonConfig } from '../../components/ConfigurationButton';
 import { InfoSocial } from '../../components/InfoSocial';
 import { PostUser } from '../../components/Posts/PostUser';
 import { NewPostButton } from '../../components/Posts/NewPostButton';
 import { UserDTO } from '../../dtos/userDTO';
+import { ActivityIndicator } from 'react-native';
+import { useTheme } from 'styled-components';
 
 import { useNavigation, ParamListBase, NavigationProp, useRoute, useFocusEffect } from '@react-navigation/native';
 
@@ -44,7 +46,9 @@ interface UserParams{
 export function Home(){
 
   const [allposts, setAllposts] = useState<PostDTO[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
+  const theme = useTheme();
   const navigation = useNavigation<NavigationProp<ParamListBase>>()
   const routes = useRoute()
   const {user} = routes.params as Params
@@ -66,6 +70,7 @@ export function Home(){
       const response = await api.get(`posts?userId=${user.id}`)
 
       setAllposts(response.data)
+      setIsLoading(false)
   
     } catch (error) {
       
@@ -107,18 +112,22 @@ export function Home(){
   <TextPost>
     Suas Postagens
   </TextPost>
-
-    <FlatList 
-    data={allposts.reverse()}
-    inverted={false}
-    keyExtractor={item => item.id}
-    renderItem={({item})=> 
-    <PostUser 
-    data={item}
-    />
-  
+  {isLoading ?
+  <FlatList 
+  data={allposts.reverse()}
+  inverted={false}
+  keyExtractor={item => item.id}
+  renderItem={({item})=> 
+  <PostUser 
+  data={item}
+  />
   }
-    />
+  />: 
+  <ActivityIndicator 
+  color={theme.colors.primary}
+  />
+  }
+    
  
   
   <FooteButton>

@@ -3,7 +3,7 @@ import {Keyboard, TouchableWithoutFeedback} from 'react-native'
 
 
 import { useForm } from 'react-hook-form';
-import { ButtonImage } from '../../components/ButtonImage/indes';
+import { ButtonImage } from '../../components/AddImageButton';
 import { FormButton } from '../../components/Form/FormButton';
 import { InputPost } from '../../components/Posts/InputPost';
 import { api } from '../../services/api';
@@ -52,6 +52,7 @@ export function NewPost(){
   
 
   const [image, setImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false)
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -71,7 +72,7 @@ export function NewPost(){
   
 
   async function handleCreatNewPost({post}: PostProps){
-
+    setIsLoading(true)
     await api.post('/posts', {
       id: uuid.v4(),
       idIgraja: user.idIgreja,
@@ -81,6 +82,7 @@ export function NewPost(){
       date: new Date(),
       user: user 
     }).then(response => {
+      setIsLoading(false)
       navigation.goBack()
     })
 
@@ -112,6 +114,8 @@ export function NewPost(){
     />
     </UserWrapper>
     <FormButton 
+    enabled={isLoading}
+    loading={isLoading}
     title='criar publicação'
     onPress={handleSubmit(handleCreatNewPost)}
     />
