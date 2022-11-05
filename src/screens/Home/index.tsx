@@ -4,7 +4,7 @@ import { InfoSocial } from '../../components/InfoSocial';
 import { PostUser } from '../../components/Posts/PostUser';
 import { NewPostButton } from '../../components/Posts/NewPostButton';
 import { UserDTO } from '../../dtos/userDTO';
-import { ActivityIndicator} from 'react-native';
+import { ActivityIndicator, BackHandler} from 'react-native';
 import { useTheme } from 'styled-components';
 import Animated, {
   useSharedValue,
@@ -112,6 +112,12 @@ export function Home(){
       leadPosts();
     }, [])
   );
+
+  useEffect(()=>{
+    BackHandler.addEventListener('hardwareBackPress', ()=> {
+        return true
+    })
+})
 
  return(
  
