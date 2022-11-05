@@ -1,9 +1,12 @@
 import styled from 'styled-components/native'
 import {MaterialIcons} from '@expo/vector-icons'
 import { RFValue } from 'react-native-responsive-fontsize';
+import { Dimensions } from 'react-native';
+
+const aWidth = (Dimensions.get('window').width) - RFValue(30)
 
 export const Container = styled.View`
-    width: 350px;
+    width: ${aWidth}px ;
     background-color: ${({theme}) => theme.colors.shape};
     height: 140px;
     border-radius: 5px;

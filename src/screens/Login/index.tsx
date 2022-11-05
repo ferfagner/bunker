@@ -36,6 +36,7 @@ interface FormLogin {
 
 export function Login(){
   const [user, setUser] = useState<UserDTO>()
+  const [isLoading, setIsLoading] = useState(true)
   const {
     control,
     handleSubmit,
@@ -55,13 +56,14 @@ export function Login(){
 
 
   async function handleAcess({email, senha}: FormLogin){
-    
+    setIsLoading(true)
     try {
 
       const response = await api.get(`users?email=${email}&senha=${senha}`)
       setUser(response.data[0])
 
       if(user){
+        setIsLoading(true)
         navigation.navigate('Home', {user})
       }else{
         Alert.alert('e-mail ou senha incorreto!')
@@ -112,6 +114,8 @@ export function Login(){
     <ButtonWrapper>
 
     <FormButton
+    enabled={isLoading}
+    loading={isLoading}
     title="Entrar"
     onPress={handleSubmit(handleAcess)}
     />

@@ -39,7 +39,7 @@ export function Register(){
 
     const navigation = useNavigation<NavigationProp<ParamListBase>>()
     const [image, setImage] = useState(null);
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -59,7 +59,7 @@ export function Register(){
     async function handleRegisterUser({name, userName, email, senha}: UserProps) {
 
 
-        setIsLoading(true)
+        setIsLoading(false)
 
         await api.post('/users',{
             id: uuid.v4(),
@@ -71,7 +71,7 @@ export function Register(){
             image: image
 
         }).then(response => {
-            setIsLoading(false)
+            setIsLoading(true)
             navigation.navigate('Login')
             
         })

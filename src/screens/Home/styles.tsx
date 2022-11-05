@@ -2,6 +2,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import styled,{css}from 'styled-components/native'
 import {getStatusBarHeight, getBottomSpace} from 'react-native-iphone-x-helper'
 import { FlatList } from 'react-native';
+import { RectButton } from 'react-native-gesture-handler';
 
 interface HeaderProps{
 
@@ -69,11 +70,13 @@ export const ButtonConfigWrapper = styled.View`
 `;
 
 export const InfoSocialContent = styled.View`
+    flex-direction: row;
     position: absolute;
     width: 100%;
     margin-top: ${getStatusBarHeight() + 120}px ;
-    margin-left: 20px;
-    margin-right: 20px;
+    justify-content: center;
+    margin-left: 0px;
+    margin-right: 0px;
 `;
 
 export const PostsList = styled(FlatList).attrs({
@@ -100,6 +103,11 @@ export const FooteButton = styled.View`
     right: 22px;
 `;
 
+
+export const ActiveWrapper = styled.View`
+    flex: 1;
+    justify-content: center;
+`;
 
 
 

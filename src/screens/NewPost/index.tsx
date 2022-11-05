@@ -52,7 +52,7 @@ export function NewPost(){
   
 
   const [image, setImage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -72,7 +72,7 @@ export function NewPost(){
   
 
   async function handleCreatNewPost({post}: PostProps){
-    setIsLoading(true)
+    setIsLoading(false)
     await api.post('/posts', {
       id: uuid.v4(),
       idIgraja: user.idIgreja,
@@ -82,7 +82,7 @@ export function NewPost(){
       date: new Date(),
       user: user 
     }).then(response => {
-      setIsLoading(false)
+      setIsLoading(true)
       navigation.goBack()
     })
 
