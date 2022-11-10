@@ -6,18 +6,20 @@ import { Input } from '../Input';
 
 
 import {
-  Container
+  Container,
+  Error
 } from './styles'
 
 interface Props extends TextInputProps {
   control: Control;
   name: string;
- 
+  error: string;
 }
 
 export function InputPost({
   control,
   name,
+  error,
   ...rest
 }: Props): JSX.Element {
   
@@ -37,6 +39,7 @@ export function InputPost({
         name={name}
         
       />
+      {error && <Error>{error}</Error>}
     </Container>
   );
 }

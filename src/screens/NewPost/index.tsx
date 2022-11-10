@@ -24,6 +24,8 @@ import {
   NameIgreja,
   UserWrapper
 } from './styles'
+import { yupResolver } from '@hookform/resolvers/yup';
+import { schema } from './schema';
 
 
 
@@ -45,9 +47,11 @@ export function NewPost(){
   const {
     control,
     handleSubmit,
-    reset
-  } = useForm()
-  
+    reset,
+    formState: {errors}
+} = useForm({
+    resolver: yupResolver(schema)
+})
   const navigation = useNavigation<NavigationProp<ParamListBase>>()
   
 
@@ -108,6 +112,7 @@ export function NewPost(){
     placeholder='Compartilhe sua mensagem!'
     name='post'
     control={control}
+    error={errors.post && errors.post.message.toString()}
     />
     <ButtonImage
     onPress={pickImage}

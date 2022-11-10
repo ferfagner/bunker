@@ -1,17 +1,18 @@
 import styled from 'styled-components/native'
 import { RFValue } from 'react-native-responsive-fontsize';
-import { getBottomSpace } from 'react-native-iphone-x-helper';
+import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { RectButton } from 'react-native-gesture-handler';
 
 
 export const Container = styled.View`
 
-    flex: 1;
+    
    
     background-color: ${({theme}) => theme.colors.primary};
 
     justify-content: flex-end;
     align-items: center;
+    padding-top: ${getStatusBarHeight()+100}px;
 
 
 `;
@@ -33,7 +34,7 @@ export const ButtonWrapper = styled.View`
 
 export const NotAccoutWrapper = styled(RectButton)`
 
-    padding-bottom: ${getBottomSpace() + 80}px;
+    padding-bottom: ${getBottomSpace() + 50}px;
 
 `;
 

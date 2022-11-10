@@ -1,8 +1,6 @@
 import react, { useState } from 'react';
-import {Keyboard, TouchableWithoutFeedback} from 'react-native'
-
+import {Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback} from 'react-native'
 import Logo from '../../assets/logo.svg'
-
 import { FormButton } from '../../components/Form/FormButton';
 
 import {InputForm} from '../../components/Form/InputForm'
@@ -45,14 +43,13 @@ export function Login(){
 } = useForm({
     resolver: yupResolver(schema)
 })
-
-
   const navigation = useNavigation<NavigationProp<ParamListBase>>()
 
   function handleRegister(){
       navigation.navigate('Register')
     
   }
+
 
 
   async function handleAcess({email, senha}: FormLogin){
@@ -80,6 +77,7 @@ export function Login(){
   }
 
  return(
+  <KeyboardAvoidingView behavior='position' enabled>
 <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
  <Container >
 
@@ -95,6 +93,7 @@ export function Login(){
     <InputForm 
     name='email'
     control={control}
+    keyboardType='email-address'
     placeholder="Digite seu E-mail!"
     autoCorrect={false}
     autoCapitalize="none"
@@ -136,6 +135,7 @@ export function Login(){
     
  </Container>
  </TouchableWithoutFeedback>
+ </KeyboardAvoidingView>
 )
 
 }

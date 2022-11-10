@@ -7,6 +7,7 @@ import {Home} from '../screens/Home'
 import {Login} from '../screens/Login'
 import {Register} from '../screens/Register'
 import {NewPost} from '../screens/NewPost'
+import { AllPosts } from "../screens/AllPosts";
 
 
 const {Navigator, Screen} = createNativeStackNavigator()
@@ -36,6 +37,10 @@ export function StackRoutes(){
             <Screen
             name={'NewPost'}
             component={NewPost}
+            />
+            <Screen
+            name={'AllPosts'}
+            component={AllPosts}
             />
 
         </Navigator>

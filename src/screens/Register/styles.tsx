@@ -8,8 +8,8 @@ export const Container = styled.View`
     align-items: center;
 
     background-color: ${({theme})=> theme.colors.background_color};
-
     padding-bottom: ${getBottomSpace() + 30}px;
+    
 
 `;
 
@@ -17,7 +17,7 @@ export const Title = styled.Text`
     color: ${({theme})=> theme.colors.otherText};
     font-size: ${RFValue(16)}px;
     font-family: ${({theme}) => theme.font.bold};
-    padding-bottom: ${RFValue(35)}px;
+    padding-bottom: ${RFValue(20)}px;
 `;
 
 

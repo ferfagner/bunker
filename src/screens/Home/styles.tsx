@@ -4,6 +4,7 @@ import {getStatusBarHeight, getBottomSpace} from 'react-native-iphone-x-helper'
 import { FlatList } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
+
 interface HeaderProps{
 
     imageHeader: string
@@ -93,8 +94,8 @@ export const TextPost = styled.Text`
     font-size: ${RFValue(20)}px;
     font-family: ${({theme}) => theme.font.bold};
     color: ${({theme}) => theme.colors.secondary};
-    margin-top: ${RFValue(80)}px;
-    margin-left: 10px;
+    
+    
 `;
 
 export const FooteButton = styled.View`
@@ -107,6 +108,19 @@ export const FooteButton = styled.View`
 export const ActiveWrapper = styled.View`
     flex: 1;
     justify-content: center;
+`;
+
+export const ButtonTop = styled(RectButton)`
+   
+`;
+
+export const TitleWrapper = styled.View`
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: center;
+   margin-top: ${RFValue(80)}px;
+   margin-left: 10px;
+   margin-right: 10px;
 `;
 
 

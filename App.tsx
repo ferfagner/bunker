@@ -1,5 +1,4 @@
 import React from 'react';
-import AppLoading from 'expo-app-loading'
 import {useFonts,
   Poppins_300Light,
   Poppins_400Regular,
@@ -15,8 +14,6 @@ import theme from './src/styles/theme';
 import { Routes } from './src/routes';
 
 
-
-
 export default function App() {
 
   const [fontsLoaded] = useFonts({
@@ -25,7 +22,6 @@ export default function App() {
     Poppins_500Medium,
     Poppins_700Bold
   })
-
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
       // This tells the splash screen to hide immediately

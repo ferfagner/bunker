@@ -11,6 +11,5 @@ export const Error = styled.Text`
    color: ${({ theme }) => theme.colors.button};
   font-family: ${({ theme }) => theme.font.regular};
   font-size: ${RFValue(10)}px;
-  margin: 7px 0;
 
 `;

@@ -1,23 +1,29 @@
 import react from 'react';
+import { RectButtonProps } from 'react-native-gesture-handler';
 
 import {
   Container,
-  ConfigButton,
   Icon
 } from './styles'
 
+interface Props extends RectButtonProps{
+  onPress: () => void;
+}
 
 
-export function ButtonConfig(){
+
+export function ButtonConfig({onPress, ...rest}: Props){
 
  return(
 
- <Container>
-    <ConfigButton>
+ <Container
+ onPress={onPress}
+ >
+    
       <Icon 
       name="menu"
       />
-    </ConfigButton>
+    
  </Container>
 )
 

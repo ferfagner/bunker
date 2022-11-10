@@ -1,4 +1,4 @@
-import react, { useState, useEffect, useCallback } from 'react';
+import react, { useState, useEffect, useCallback, useRef } from 'react';
 import { ButtonConfig } from '../../components/ConfigurationButton';
 import { InfoSocial } from '../../components/InfoSocial';
 import { PostUser } from '../../components/Posts/PostUser';
@@ -6,16 +6,17 @@ import { NewPostButton } from '../../components/Posts/NewPostButton';
 import { UserDTO } from '../../dtos/userDTO';
 import { ActivityIndicator, BackHandler} from 'react-native';
 import { useTheme } from 'styled-components';
+import {AntDesign} from '@expo/vector-icons';
+
 import Animated, {
   useSharedValue,
   useAnimatedScrollHandler,
   useAnimatedStyle,
   interpolate,
-  Extrapolate,
-  event
+  Extrapolate
 } from 'react-native-reanimated';{}
 
-import { useNavigation, ParamListBase, NavigationProp, useRoute, useFocusEffect } from '@react-navigation/native';
+import { useNavigation, ParamListBase, NavigationProp, useRoute, useFocusEffect, useScrollToTop } from '@react-navigation/native';
 
 import {
   Container,
@@ -30,7 +31,10 @@ import {
   InfoSocialContent,
   TextPost,
   FooteButton,
-  ActiveWrapper
+  ActiveWrapper,
+  ButtonTop,
+  TitleWrapper
+
 } from './styles'
 import { api } from '../../services/api';
 import { PostDTO } from '../../dtos/postDTO';
@@ -39,31 +43,25 @@ interface Params{
   user: UserDTO
 }
 
-interface UserParams{
-    id: string;
-    idIgreja: string;
-    name: string;
-    userName: string;
-    email: string;
-    senha: string;
-    image: string
-}
 
 
 export function Home(){
 
   const [allposts, setAllposts] = useState<PostDTO[]>([])
   const [isLoading, setIsLoading] = useState(false)
-
+  const [isLoadingPost, setIsLoadingPost] = useState(false)
   const theme = useTheme();
   const navigation = useNavigation<NavigationProp<ParamListBase>>()
   const routes = useRoute()
   const {user} = routes.params as Params
 
   const scrollY = useSharedValue(0);
+  
   const scollHandle = useAnimatedScrollHandler(event => {
     scrollY.value = event.contentOffset.y
   })
+
+ 
 
   const headerStyleAnimated = useAnimatedStyle(()=> {
     return{
@@ -85,10 +83,32 @@ export function Home(){
         )
       }
   })
+
+  const buttonTopStyleAnimation = useAnimatedStyle(()=>{
+    return{
+      opacity: interpolate(
+        scrollY.value,
+        [0, 150],
+        [0, 1]
+      )
+    }
+})
  
   function handleNewPost(){
     navigation.navigate('NewPost', {user})
   }
+
+  function handleAllPosts(){
+    navigation.navigate('AllPosts')
+  }
+
+  function handleTop(){
+    scrollY.value = 0
+    //listRef.current.scrollToOffset({ offset: 0, animated: true })
+  
+  }
+
+  
 
   async function leadPosts(){
 
@@ -96,7 +116,10 @@ export function Home(){
       
       const response = await api.get(`posts?userId=${user.id}`)
 
-      setAllposts(response.data)
+      const data = response.data
+
+      setAllposts(data.reverse())
+      setIsLoadingPost(false)
       setIsLoading(true)
       
   
@@ -105,6 +128,16 @@ export function Home(){
       
     }
 
+  }
+
+  async function handleConfig(id) {
+    setIsLoadingPost(true)
+    try {
+      await api.delete(`posts/${id}`)
+      leadPosts()
+    } catch (error) {
+      
+    }
   }
 
   useFocusEffect(
@@ -136,7 +169,9 @@ style={[headerStyleAnimated, infoUserStyleAnimation]}
       </User>
       </UserInfo>
       <ButtonConfigWrapper>
-      <ButtonConfig />
+      <ButtonConfig 
+      onPress={handleAllPosts}
+      />
       </ButtonConfigWrapper>
     </ContentUser>
   </Header>
@@ -149,23 +184,38 @@ style={[headerStyleAnimated, infoUserStyleAnimation]}
   
   </Animated.View>
 
+  <TitleWrapper>
   <TextPost>
     Suas Postagens
   </TextPost>
-  
+ 
+  <Animated.View style={[buttonTopStyleAnimation]}>
+  <ButtonTop onPress={handleTop}>
+  <AntDesign 
+  name='upcircleo'
+  size={30}
+  color={theme.colors.otherText}
+  />
+  </ButtonTop>
+  </Animated.View>
+
+  </TitleWrapper>
   
   {isLoading ?
   <Animated.FlatList
-  data={allposts.reverse()}
+  data={allposts}
   keyExtractor={item => item.id}
   renderItem={({item})=> 
   <PostUser 
   data={item}
+  onPress={() => handleConfig(item.id)}
+  isLoading={isLoadingPost}
   />
   }
   onScroll={scollHandle}
   showsVerticalScrollIndicator={false}
   scrollEventThrottle={16}
+  
   />: 
   <ActiveWrapper>
   <ActivityIndicator 

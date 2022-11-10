@@ -4,6 +4,8 @@ export default{
 
         header: '#2b2b2b',
 
+        placeHolder: '#a6a2a2',
+
         background_color: '#000000',
 
         primary: '#000000',

@@ -10,10 +10,10 @@ export const Container = styled(TextInput)`
     width: ${RFValue(311)}px;
     height: ${RFValue(56)}px;
     border-radius: 5px;
-    margin-bottom: 16px;
-    
+    margin-bottom: 16px;    
     font-family: ${({theme}) => theme.font.regular};
     font-size: 14px;
+    
 
     
 `;

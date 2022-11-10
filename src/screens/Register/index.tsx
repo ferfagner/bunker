@@ -1,5 +1,9 @@
 import react, { useState } from 'react';
-import {Keyboard, TouchableWithoutFeedback} from 'react-native'
+import {
+    Keyboard, 
+    KeyboardAvoidingView,
+    ScrollView,
+    TouchableWithoutFeedback} from 'react-native'
 
 import { InputForm } from '../../components/Form/InputForm';
 
@@ -91,7 +95,9 @@ export function Register(){
         resolver: yupResolver(schema)
     })
  return(
-<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+ //<KeyboardAvoidingView behavior='position' enabled>
+<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+ 
  <Container>
     <Title>Criar uma nova Conta!</Title>
     <FormWrapper>
@@ -156,7 +162,9 @@ export function Register(){
     />
 
  </Container>
+ 
  </TouchableWithoutFeedback>
+ //</KeyboardAvoidingView>
 )
 
 }
