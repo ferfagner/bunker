@@ -8,6 +8,7 @@ import {Login} from '../screens/Login'
 import {Register} from '../screens/Register'
 import {NewPost} from '../screens/NewPost'
 import { AllPosts } from "../screens/AllPosts";
+import { Comment } from "../screens/Comments";
 
 
 const {Navigator, Screen} = createNativeStackNavigator()
@@ -41,6 +42,10 @@ export function StackRoutes(){
             <Screen
             name={'AllPosts'}
             component={AllPosts}
+            />
+            <Screen
+            name={'Comment'}
+            component={Comment}
             />
 
         </Navigator>

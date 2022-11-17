@@ -2,6 +2,7 @@ import styled from 'styled-components/native'
 import { RFValue } from 'react-native-responsive-fontsize';
 import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { RectButton } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native';
 
 
 export const Container = styled.View`
@@ -32,9 +33,9 @@ export const ButtonWrapper = styled.View`
 
 `;
 
-export const NotAccoutWrapper = styled(RectButton)`
+export const NotAccoutWrapper = styled(TouchableOpacity)`
 
-    padding-bottom: ${getBottomSpace() + 50}px;
+    padding-bottom: ${getBottomSpace() +50}px;
 
 `;
 

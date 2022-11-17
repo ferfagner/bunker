@@ -1,19 +1,17 @@
 import react from 'react';
 import { Entypo } from '@expo/vector-icons';
-import { RectButtonProps } from 'react-native-gesture-handler';
+import {  TouchableOpacityProps } from 'react-native';
 
 import {
   Container
 } from './styles'
 
 
-export function NewPostButton({...rest}: RectButtonProps){
+export function NewPostButton({...rest}: TouchableOpacityProps){
 
  return(
 
- <Container
-{...rest}
- >
+ <Container {...rest}>
 
     <Entypo 
     name="plus" 

@@ -42,7 +42,6 @@ export function NewPost(){
   const routes = useRoute()
   const {user} = routes.params as Params
 
-  console.log(user)
 
   const {
     control,

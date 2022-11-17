@@ -1,5 +1,7 @@
 import react from 'react';
+import { TouchableOpacityProps } from 'react-native';
 import { RectButtonProps } from 'react-native-gesture-handler';
+
 
 import {
   Container,
@@ -9,7 +11,7 @@ import {
 
 
 
-export function ButtonImage({...rest}: RectButtonProps){
+export function ButtonImage({...rest}: TouchableOpacityProps){
 
  return(
 

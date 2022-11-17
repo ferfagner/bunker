@@ -1,8 +1,8 @@
-import react from 'react';
+import react, { useCallback, useEffect, useState } from 'react';
 import {PostDTO} from '../../../dtos/postDTO'
 import { AntDesign, Ionicons } from '@expo/vector-icons';
-import { RectButtonProps } from 'react-native-gesture-handler';
-
+import 'intl';
+import 'intl/locale-data/jsonp/en';
 import {
   Container,
   Header,
@@ -19,17 +19,21 @@ import {
   WrapperUser,
   WrapperActive
 } from './styles'
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, TouchableOpacityProps } from 'react-native';
 import { useTheme } from 'styled-components';
+import { api } from '../../../services/api';
+import { useFocusEffect } from '@react-navigation/native';
 
 
-interface PostUserProps extends RectButtonProps{
+
+interface PostUserProps extends TouchableOpacityProps{
     data: PostDTO;
     isLoading?: boolean
+    Comment?: () => void
 }
 
-export function PostUser({data, isLoading = false, onPress, ...rest}: PostUserProps){
-
+export function PostUser({data, isLoading = false, onPress, Comment, ...rest}: PostUserProps){
+    const [qntComments, setQntComments] = useState([])
     const theme = useTheme()
     const dateFormatted = Intl.DateTimeFormat("pt-BR", {
         day: "2-digit",
@@ -38,6 +42,21 @@ export function PostUser({data, isLoading = false, onPress, ...rest}: PostUserPr
         hour: "2-digit",
         minute: "numeric"
       }).format(new Date(data.date));
+
+      async function loadComments(){
+        try {
+            const response = await api.get(`comments?idPost=${data.id}`)
+            setQntComments(response.data)
+        } catch (error) {
+            
+        }
+    }
+
+    useFocusEffect(
+        useCallback(() => {
+            loadComments();
+        }, [])
+      );
 
  return(
 
@@ -81,12 +100,14 @@ export function PostUser({data, isLoading = false, onPress, ...rest}: PostUserPr
         </TextPost>
     </PostContent>
     <Footer>
-        <ComentContent>
+        <ComentContent
+        onPress={Comment}
+        >
         <AntDesign 
         name="message1"
         size={20}
         />
-        <Title>0 Comentarios</Title>
+        <Title>{qntComments.length} Comentarios</Title>
         </ComentContent>
         <Data>{dateFormatted}</Data>
     </Footer>

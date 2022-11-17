@@ -28,8 +28,8 @@ import { schema } from './schema';
 
 
 interface FormLogin {
-  email: string,
-  senha: string
+  email: string;
+  senha: string;
 }
 
 export function Login(){
@@ -77,7 +77,7 @@ export function Login(){
   }
 
  return(
-  <KeyboardAvoidingView behavior='position' enabled>
+  <KeyboardAvoidingView behavior='height' enabled>
 <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
  <Container >
 

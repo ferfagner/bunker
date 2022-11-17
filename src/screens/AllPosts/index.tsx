@@ -29,11 +29,11 @@ export function AllPosts(){
     async function getAllPosts(){
       try {
     
-          const response = await api.get(`posts`)
+          const response = await api.get(`posts?_page=1&_limit=6`)
     
           const data = response.data
     
-          setAllposts(data.reverse())
+          setAllposts(data)
           setIsLoading(true)
           
       
@@ -72,6 +72,8 @@ export function AllPosts(){
     }
     showsVerticalScrollIndicator={false}
     scrollEventThrottle={16}
+    initialNumToRender={6}
+    updateCellsBatchingPeriod={6}
     />
     :
     <ActiveWrapper>

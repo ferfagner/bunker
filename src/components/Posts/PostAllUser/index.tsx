@@ -21,7 +21,8 @@ import {
 } from './styles'
 import { ActivityIndicator } from 'react-native';
 import { useTheme } from 'styled-components';
-
+import 'intl';
+import 'intl/locale-data/jsonp/en';
 
 interface PostUserProps extends RectButtonProps{
     data: PostDTO;

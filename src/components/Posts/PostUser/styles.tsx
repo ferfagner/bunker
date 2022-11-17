@@ -1,7 +1,7 @@
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native'
 
-import { RectButton } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native';
 
 export const Container = styled.View`
     width: 100%;
@@ -52,7 +52,7 @@ export const Footer = styled.View`
    align-items: center;
 `;
 
-export const ComentContent = styled.View`
+export const ComentContent = styled(TouchableOpacity)`
    flex-direction: row;
     align-items: center;
 `;
@@ -68,7 +68,7 @@ export const Data = styled.Text`
     font-family: ${({theme}) => theme.font.regular};
 `;
 
-export const ButtonConfig = styled(RectButton)`
+export const ButtonConfig = styled(TouchableOpacity)`
    
 `;
 

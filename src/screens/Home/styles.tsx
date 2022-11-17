@@ -1,8 +1,7 @@
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled,{css}from 'styled-components/native'
 import {getStatusBarHeight, getBottomSpace} from 'react-native-iphone-x-helper'
-import { FlatList } from 'react-native';
-import { RectButton } from 'react-native-gesture-handler';
+import { FlatList, TouchableOpacity } from 'react-native';
 
 
 interface HeaderProps{
@@ -110,7 +109,7 @@ export const ActiveWrapper = styled.View`
     justify-content: center;
 `;
 
-export const ButtonTop = styled(RectButton)`
+export const ButtonTop = styled(TouchableOpacity)`
    
 `;
 

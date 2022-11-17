@@ -3,6 +3,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native'
 import { AntDesign } from '@expo/vector-icons'; 
 import { RectButton } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native';
 
 export const Container = styled.View`
     flex: 1;
@@ -31,7 +32,7 @@ export const Title = styled.Text`
     padding-bottom: ${RFValue(35)}px;
 `;
 
-export const ButtonBack = styled(RectButton)`
+export const ButtonBack = styled(TouchableOpacity)`
 
 
 `;

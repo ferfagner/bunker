@@ -10,7 +10,6 @@ export const Container = styled(TextInput)`
     height: ${RFValue(200)}px;
     border-radius: 5px;
     margin-top: ${RFValue(20)}px;
-    
     font-family: ${({theme}) => theme.font.regular};
     font-size: 14px;
     padding: 14px;

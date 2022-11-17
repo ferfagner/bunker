@@ -4,7 +4,7 @@ import { InfoSocial } from '../../components/InfoSocial';
 import { PostUser } from '../../components/Posts/PostUser';
 import { NewPostButton } from '../../components/Posts/NewPostButton';
 import { UserDTO } from '../../dtos/userDTO';
-import { ActivityIndicator, BackHandler} from 'react-native';
+import { ActivityIndicator, Alert, BackHandler} from 'react-native';
 import { useTheme } from 'styled-components';
 import {AntDesign} from '@expo/vector-icons';
 
@@ -114,11 +114,11 @@ export function Home(){
 
     try {
       
-      const response = await api.get(`posts?userId=${user.id}`)
+      const response = await api.get(`posts?userId=${user.id}&_order=asc`)
 
       const data = response.data
 
-      setAllposts(data.reverse())
+      setAllposts(data)
       setIsLoadingPost(false)
       setIsLoading(true)
       
@@ -138,6 +138,11 @@ export function Home(){
     } catch (error) {
       
     }
+  }
+
+  function handleComment(post: PostDTO){
+    navigation.navigate('Comment', {post})
+
   }
 
   useFocusEffect(
@@ -210,12 +215,13 @@ style={[headerStyleAnimated, infoUserStyleAnimation]}
   data={item}
   onPress={() => handleConfig(item.id)}
   isLoading={isLoadingPost}
+  Comment={() => handleComment(item)}
   />
   }
   onScroll={scollHandle}
   showsVerticalScrollIndicator={false}
   scrollEventThrottle={16}
-  
+  initialNumToRender={4}
   />: 
   <ActiveWrapper>
   <ActivityIndicator 

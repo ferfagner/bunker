@@ -2,9 +2,10 @@ import styled from 'styled-components/native'
 import {Ionicons} from '@expo/vector-icons'
 import { RectButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { TouchableOpacity } from 'react-native';
 
 
-export const Container = styled(RectButton)`
+export const Container = styled(TouchableOpacity)`
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
