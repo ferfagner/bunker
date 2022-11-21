@@ -1,5 +1,5 @@
 import react, { useCallback, useState } from 'react';
-import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute, useIsFocused } from '@react-navigation/native';
 import {
   Container,
   Header,
@@ -13,14 +13,16 @@ import { PostDTO } from '../../dtos/postDTO';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from './schema';
-import { Keyboard, ListView, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { Keyboard } from 'react-native';
 import { InputComment } from '../../components/Comment/InputComment';
 import { MaterialIcons } from '@expo/vector-icons';
 import { api } from '../../services/api';
 import uuid from 'react-native-uuid';
 import { commentsDTO } from '../../dtos/commentsDTO';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 import { ViewComments } from '../../components/Comment/ViewComments';
+
 
 interface Params{
     post: PostDTO
@@ -38,7 +40,7 @@ export function Comment(){
     const routes = useRoute()
     const {post} = routes.params as Params
     const [allComments, setAllComments] = useState<commentsDTO[]>()
-
+    const isFocused = useIsFocused()
     
 
   const {
@@ -89,7 +91,7 @@ export function Comment(){
     useFocusEffect(
         useCallback(() => {
             loadComments();
-        },[])
+        },[isFocused])
       );
 
     

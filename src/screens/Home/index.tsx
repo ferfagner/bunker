@@ -1,10 +1,10 @@
-import react, { useState, useEffect, useCallback, useRef } from 'react';
+import react, { useState, useEffect, useCallback } from 'react';
 import { ButtonConfig } from '../../components/ConfigurationButton';
 import { InfoSocial } from '../../components/InfoSocial';
 import { PostUser } from '../../components/Posts/PostUser';
 import { NewPostButton } from '../../components/Posts/NewPostButton';
 import { UserDTO } from '../../dtos/userDTO';
-import { ActivityIndicator, Alert, BackHandler} from 'react-native';
+import { ActivityIndicator,  BackHandler} from 'react-native';
 import { useTheme } from 'styled-components';
 import {AntDesign} from '@expo/vector-icons';
 

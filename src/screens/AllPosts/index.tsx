@@ -1,11 +1,10 @@
 import react, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
-import { PostAllUser } from '../../components/Posts/PostAllUser';
 import { PostDTO } from '../../dtos/postDTO';
 import { api } from '../../services/api';
 import { ActivityIndicator} from 'react-native';
 import { useTheme } from 'styled-components';
-import { useNavigation, ParamListBase, NavigationProp, useRoute, useFocusEffect } from '@react-navigation/native';
+import { useNavigation, ParamListBase, NavigationProp, } from '@react-navigation/native';
 import {
   Container,
   Title,
@@ -14,16 +13,22 @@ import {
   ButtonBack,
   ActiveWrapper
 } from './styles'
+import { PostUser } from '../../components/Posts/PostUser';
 
 export function AllPosts(){
 
     const [allposts, setAllposts] = useState<PostDTO[]>([])
     const [isLoading, setIsLoading] = useState(false)
-    const navigation = useNavigation()
+    const navigation = useNavigation<NavigationProp<ParamListBase>>()
     const theme = useTheme()
 
     function handleBack(){
         navigation.goBack()
+    }
+
+    function handleComment(post: PostDTO){
+      navigation.navigate('Comment', {post})
+  
     }
 
     async function getAllPosts(){
@@ -66,8 +71,9 @@ export function AllPosts(){
     data={allposts}
     keyExtractor={item => item.id}
     renderItem={({item})=> 
-    <PostAllUser 
+    <PostUser 
     data={item}
+    Comment={() => handleComment(item)}
     />
     }
     showsVerticalScrollIndicator={false}
