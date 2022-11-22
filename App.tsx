@@ -12,6 +12,7 @@ import { useCallback } from "react";
 import {ThemeProvider} from 'styled-components'
 import theme from './src/styles/theme';
 import { Routes } from './src/routes';
+import { AppProvider } from './src/hooks';
 
 
 export default function App() {
@@ -34,8 +35,9 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      
+      <AppProvider>
     <Routes/>
+    </AppProvider>
     </ThemeProvider>
    
   );

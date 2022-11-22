@@ -10,7 +10,7 @@ import { useNavigation, ParamListBase, NavigationProp } from '@react-navigation/
 
 import { useForm } from 'react-hook-form';
 import { api } from '../../services/api';
-
+import { useAuth } from '../../hooks/auth';
 import { Alert } from 'react-native';
 import { UserDTO } from '../../dtos/userDTO';
 
@@ -29,11 +29,11 @@ import { schema } from './schema';
 
 interface FormLogin {
   email: string;
-  senha: string;
+  password: string;
 }
 
 export function Login(){
-  const [user, setUser] = useState<UserDTO>()
+  const {signIn, user} = useAuth()
   const [isLoading, setIsLoading] = useState(true)
   const {
     control,
@@ -52,12 +52,15 @@ export function Login(){
 
 
 
-  async function handleAcess({email, senha}: FormLogin){
+  async function handleAcess({email, password}: FormLogin){
     setIsLoading(true)
     try {
 
-      const response = await api.get(`users?email=${email}&senha=${senha}`)
-      setUser(response.data[0])
+      signIn({
+        email,
+        password
+      })
+     
 
       if(user){
         setIsLoading(true)
@@ -101,13 +104,13 @@ export function Login(){
     />
 
     <InputForm 
-    name="senha"
+    name="password"
     control={control}
     placeholder="Digite sua Senha!"
     autoCorrect={false}
     secureTextEntry={true}
     autoCapitalize="none"
-    error={errors.senha && errors.senha.message.toString()}
+    error={errors.password && errors.password.message.toString()}
     />
     
     <ButtonWrapper>

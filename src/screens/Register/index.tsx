@@ -1,5 +1,6 @@
 import react, { useState } from 'react';
 import {
+    Alert,
     Keyboard, 
     KeyboardAvoidingView,
     ScrollView,
@@ -10,7 +11,6 @@ import { InputForm } from '../../components/Form/InputForm';
 import { useForm } from 'react-hook-form';
 import { api } from '../../services/api';
 
-import uuid from 'react-native-uuid';
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import * as ImagePicker from 'expo-image-picker';
@@ -36,7 +36,7 @@ interface UserProps{
     email: string,
     senha: string,
     confSenha: string,
-    image: string
+    avatar: string
 }
 
 export function Register(){
@@ -65,21 +65,20 @@ export function Register(){
 
         setIsLoading(false)
 
+    
         await api.post('/users',{
-            id: uuid.v4(),
-            idIgreja: null,
             name: name,
-            userName: userName,
+            username: userName,
             email: email,
-            senha: senha,
-            image: image
+            password: senha,
 
         }).then(response => {
-            setIsLoading(true)
-            navigation.navigate('Login')
+           navigation.navigate('Login')
+           setIsLoading(false)
             
+        }).catch(()=>{
+            Alert.alert('Opa', 'Seu e-mail ou Username já foi cadastrado')
         })
-
 
         
     }
