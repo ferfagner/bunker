@@ -1,4 +1,4 @@
-import react from 'react';
+import react, {memo} from 'react';
 import { commentsDTO } from '../../../dtos/commentsDTO';
 
 import {
@@ -17,7 +17,7 @@ interface CommentsProps{
   data: commentsDTO;
 }
 
-export function ViewComments({data}: CommentsProps){
+function ViewCommentsComponent({data}: CommentsProps){
  
   const dateFormatted = Intl.DateTimeFormat("pt-BR", {
     day: "2-digit",
@@ -50,3 +50,7 @@ export function ViewComments({data}: CommentsProps){
 )
 
 }
+
+export const ViewComments = memo(ViewCommentsComponent, (prevProps, nextProps)=>{
+  return Object.is(prevProps.data, nextProps.data)
+})

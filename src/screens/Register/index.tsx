@@ -9,7 +9,10 @@ import {
 import { InputForm } from '../../components/Form/InputForm';
 
 import { useForm } from 'react-hook-form';
-import { api } from '../../services/api';
+
+import firestore from '@react-native-firebase/firestore';
+
+import auth from '@react-native-firebase/auth';
 
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -65,23 +68,39 @@ export function Register(){
 
         setIsLoading(false)
 
-    
-        await api.post('/users',{
-            name: name,
-            username: userName,
-            email: email,
-            password: senha,
+        auth().createUserWithEmailAndPassword(email, senha)
+        .then(async ({user}) => {
 
-        }).then(response => {
-           navigation.navigate('Login')
-           setIsLoading(false)
+            await  firestore()
+            .collection('users')
+            .doc(user.uid)
+            .set({
+                name,
+                userName
+            })
+
+
+            Alert.alert('Usuario cadastrado com sucesso')
+
             
-        }).catch(()=>{
-            Alert.alert('Opa', 'Seu e-mail ou Username já foi cadastrado')
-        })
 
-        
+            navigation.navigate('Login')
+            setIsLoading(false)
+        })
+        .catch(error => {
+            console.log(error)
+            if(error.code === 'auth/email-already-in-use'){
+              Alert.alert('esse e-mail já foi cadastrado!')
+            }
+          })
+
+
+
     }
+    
+        
+      
+    
 
     
 
@@ -148,11 +167,12 @@ export function Register(){
     error={errors.confSenha && errors.confSenha.message.toString()}
     />
     </FormWrapper>
-    <ButtonWrapper>
-    <ButtonImage 
-    onPress={pickImage}
-    />
-    </ButtonWrapper>
+   { //<ButtonWrapper>
+    //<ButtonImage 
+    //onPress={pickImage}
+    ///>
+    //</ButtonWrapper>
+    }
     <FormButton 
     enabled={isLoading}
     loading={isLoading}

@@ -5,7 +5,10 @@ import React, {
     ReactNode,
     useEffect
 } from "react";
-import { api } from "../services/api";
+
+import firestore from '@react-native-firebase/firestore';
+
+import auth from '@react-native-firebase/auth';
 
 interface UserProps {
 
@@ -13,8 +16,7 @@ interface UserProps {
     email: string;
     name: string;
     username: string;
-    avatar: string;
-    token: string;
+    
 
 }
 
@@ -40,27 +42,32 @@ const AuthContex = createContext<authContexData>({} as authContexData)
 
 
 function AuthProvider({children}: authProviderProrps){
+    
 
-    const [data, settData] = useState<UserProps>({} as UserProps)
+    const [data, setData] = useState<UserProps>({} as UserProps)
 
     async function signIn({email, password}: SingInCredential) {
         
-        try {
-            const response = await api.post('/sessions',{
-                email,
-                password
-            })
+    auth().signInWithEmailAndPassword(email, password)
+    .then(async ({user})=> {
 
-            const {token, user} = response.data
+        const allinfoUser = 
+        await firestore()
+        .collection('users')
+        .doc(user.uid)
+        .get();
 
-            api.defaults.headers.common['Authorization']= `Barrer ${token}`
+        const infoUser = allinfoUser.data()
 
-            settData(user)
+        
 
-
-        } catch (error) {
-            throw new Error(error)
-        }
+        setData({
+            id: user.uid,
+            email: user.email,
+            name: infoUser.name,
+            username: infoUser.userName
+        })
+    })
 
         
     }

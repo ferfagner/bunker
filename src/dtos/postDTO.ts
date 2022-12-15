@@ -5,13 +5,5 @@ export interface PostDTO{
     textPost: string;
     imagePost: string;
     date: string;
-    user: {
-    id: string;
-    idIgreja: string;
-    name: string;
-    userName: string;
-    email: string;
-    senha: string;
-    image: string
-    }
+    
 }

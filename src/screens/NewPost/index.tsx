@@ -1,18 +1,17 @@
 import react, { useState } from 'react';
 import {Keyboard, TouchableWithoutFeedback} from 'react-native'
-
+import firestore from '@react-native-firebase/firestore';
 
 import { useForm } from 'react-hook-form';
 import { ButtonImage } from '../../components/AddImageButton';
 import { FormButton } from '../../components/Form/FormButton';
 import { InputPost } from '../../components/Posts/InputPost';
-import { api } from '../../services/api';
 import uuid from 'react-native-uuid';
 import { UserDTO } from '../../dtos/userDTO';
 import { NavigationProp, ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 
-
+import storage from '@react-native-firebase/storage';
 
 import {
   Container,
@@ -55,20 +54,20 @@ export function NewPost(){
   
 
   const [image, setImage] = useState(null);
+  const [url, setUrl] = useState('');
   const [isLoading, setIsLoading] = useState(true)
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-        base64: true,
         aspect: [4,4],
         quality: 1
     });
 
     if(result.cancelled === false){
 
-        setImage(result.base64)
+        setImage(result.uri)
     }
 }
 
@@ -76,20 +75,39 @@ export function NewPost(){
 
   async function handleCreatNewPost({post}: PostProps){
     setIsLoading(false)
-    await api.post('/posts', {
-      id: uuid.v4(),
-      idIgraja: user.idIgreja,
+
+    if(image != null){
+
+      const MIME = image.match(/\.(?:.(?!\.))+$/)
+
+      const reference = storage().ref(`/imagesPost/${uuid.v4()}${MIME}`);
+  
+      await reference.putFile(image)
+  
+      const urlImage = await reference.getDownloadURL()
+
+      setUrl(urlImage)
+
+    }
+
+    
+
+    
+
+    firestore().collection('posts')
+    .add({
+      idIgraja: '1',
       userId: user.id,
       textPost: post,
-      imagePost: image,
-      date: new Date(),
-      user: user 
+      imagePost: url,
+      date: new Date().toString()
     }).then(response => {
+     
       setIsLoading(true)
       navigation.goBack()
     })
-
-  }
+    }
+  
    
 
  return(

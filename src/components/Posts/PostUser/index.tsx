@@ -1,4 +1,4 @@
-import react, { useCallback, useEffect, useState } from 'react';
+import react, { useCallback, useEffect, useState, memo, useMemo } from 'react';
 import {PostDTO} from '../../../dtos/postDTO'
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import 'intl';
@@ -24,7 +24,7 @@ import { useTheme } from 'styled-components';
 import { api } from '../../../services/api';
 import { useFocusEffect } from '@react-navigation/native';
 
-
+import firestore from '@react-native-firebase/firestore';
 
 interface PostUserProps extends TouchableOpacityProps{
     data: PostDTO;
@@ -32,31 +32,20 @@ interface PostUserProps extends TouchableOpacityProps{
     Comment?: () => void
 }
 
-export function PostUser({data, isLoading = false, onPress, Comment, ...rest}: PostUserProps){
-    const [qntComments, setQntComments] = useState([])
+function PostUserComponent({data, isLoading = false, onPress, Comment, ...rest}: PostUserProps){
+
+
+    const [qntComments, setQntComments] = useState(0)
     const theme = useTheme()
-    const dateFormatted = Intl.DateTimeFormat("pt-BR", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "numeric"
-      }).format(new Date(data.date));
+   // const dateFormatted = Intl.DateTimeFormat("pt-BR", {
+    //    day: "2-digit",
+   //     month: "2-digit",
+    //    year: "numeric",
+   //     hour: "2-digit",
+   //     minute: "numeric"
+   //   }).format(new Date(data.date));
 
-      async function loadComments(){
-        try {
-            const response = await api.get(`comments?idPost=${data.id}`)
-            setQntComments(response.data)
-        } catch (error) {
-            
-        }
-    }
-
-    useFocusEffect(
-        useCallback(() => {
-            loadComments();
-        }, [])
-      );
+    
 
  return(
 
@@ -72,9 +61,10 @@ export function PostUser({data, isLoading = false, onPress, Comment, ...rest}: P
     }
     <Header>
         <WrapperUser>
-        <ImageUser source={{uri: 'data:image/jpeg;base64,' + data.user.image}}/>
+        <ImageUser source={{uri: 'data:image/jpeg;base64,' }}/>
+        
         <UserName>
-            @{data.user.userName}
+          
         </UserName>
         </WrapperUser>
         <ButtonConfig 
@@ -92,7 +82,7 @@ export function PostUser({data, isLoading = false, onPress, Comment, ...rest}: P
     <PostContent>
         {!data.imagePost ? 
         <></>:
-        <ImagePost source={{uri: 'data:image/jpeg;base64,' + data.imagePost}}/>
+        <ImagePost source={{uri: data.imagePost}}/>
         }
         
         <TextPost>
@@ -107,12 +97,16 @@ export function PostUser({data, isLoading = false, onPress, Comment, ...rest}: P
         name="message1"
         size={20}
         />
-        <Title>{qntComments.length} Comentarios</Title>
+        <Title>{qntComments} Comentarios</Title>
         </ComentContent>
-        <Data>{dateFormatted}</Data>
+        <Data>{data.date}</Data>
     </Footer>
   
  </Container>
 )
 
 }
+
+export const PostUser = memo(PostUserComponent, (prevProps, nextProps)=>{
+    return Object.is(prevProps.data, nextProps.data)
+})

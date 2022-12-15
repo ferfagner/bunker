@@ -7,7 +7,7 @@ import { UserDTO } from '../../dtos/userDTO';
 import { ActivityIndicator,  BackHandler} from 'react-native';
 import { useTheme } from 'styled-components';
 import {AntDesign} from '@expo/vector-icons';
-
+import firestore from '@react-native-firebase/firestore';
 import Animated, {
   useSharedValue,
   useAnimatedScrollHandler,
@@ -38,6 +38,7 @@ import {
 } from './styles'
 import { api } from '../../services/api';
 import { PostDTO } from '../../dtos/postDTO';
+import { useAuth } from '../../hooks/auth';
 
 interface Params{
   user: UserDTO
@@ -48,12 +49,11 @@ interface Params{
 export function Home(){
 
   const [allposts, setAllposts] = useState<PostDTO[]>([])
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [isLoadingPost, setIsLoadingPost] = useState(false)
   const theme = useTheme();
   const navigation = useNavigation<NavigationProp<ParamListBase>>()
-  const routes = useRoute()
-  const {user} = routes.params as Params
+  const {user} = useAuth()
 
   const scrollY = useSharedValue(0);
   
@@ -110,31 +110,13 @@ export function Home(){
 
   
 
-  async function leadPosts(){
 
-    try {
-      
-      const response = await api.get(`posts?userId=${user.id}&_order=asc`)
-
-      const data = response.data
-
-      setAllposts(data)
-      setIsLoadingPost(false)
-      setIsLoading(true)
-      
-  
-    } catch (error) {
-      
-      
-    }
-
-  }
 
   async function handleConfig(id) {
     setIsLoadingPost(true)
     try {
       await api.delete(`posts/${id}`)
-      leadPosts()
+      
     } catch (error) {
       
     }
@@ -147,7 +129,25 @@ export function Home(){
 
   useFocusEffect(
     useCallback(() => {
-      leadPosts();
+
+      const subscribe = firestore()
+      .collection('posts')
+      .where('userId', '==', user.id)
+      .onSnapshot(querrySnapshot => {
+        const data = querrySnapshot.docs.map((doc)=>{
+          return{
+            id: doc.id,
+            ...doc.data()
+         }
+        }) as PostDTO[];
+        console.log('###############',data)
+      setAllposts(data)
+      setIsLoadingPost(false)
+      setIsLoading(true)
+      })
+
+      return ()=> subscribe()
+
     }, [])
   );
 
@@ -167,10 +167,10 @@ style={[headerStyleAnimated, infoUserStyleAnimation]}
   <Header>
     <ContentUser>
       <UserInfo>
-      <Image source={{uri: 'data:image/jpeg;base64,' + user.image}}/>
+      <Image source={{uri: 'data:image/jpeg;base64,' }}/>
       <User>
       <UserGraeting>Olá,</UserGraeting>
-      <UserName>{user.userName}</UserName>
+      <UserName>{user.username}</UserName>
       </User>
       </UserInfo>
       <ButtonConfigWrapper>

@@ -9,10 +9,8 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { useNavigation, ParamListBase, NavigationProp } from '@react-navigation/native';
 
 import { useForm } from 'react-hook-form';
-import { api } from '../../services/api';
 import { useAuth } from '../../hooks/auth';
 import { Alert } from 'react-native';
-import { UserDTO } from '../../dtos/userDTO';
 
 import {
   Container,
@@ -56,29 +54,18 @@ export function Login(){
     setIsLoading(true)
     try {
 
-      signIn({
+      await signIn({
         email,
         password
       })
      
-
-      if(user){
-        setIsLoading(true)
-        navigation.navigate('Home', {user})
-      }else{
-        Alert.alert('e-mail ou senha incorreto!')
-      }
-        
-        
-      
-        
          
     } catch (error) {
-      console.log(error)
+      Alert.alert('e-mail ou senha incorreto!')
     }
-  
+    
   }
-
+ 
  return(
   <KeyboardAvoidingView behavior='height' enabled>
 <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
